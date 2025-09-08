@@ -1,0 +1,125 @@
+---
+title: "Understanding React Hooks: useState and useEffect Explained for Newbies"
+description: "Break down the core concepts of React's fundamental hooks with simple, beginner-friendly examples."
+publishedAt: "2025-04-20"
+---
+
+import { Sandpack } from "@codesandbox/sandpack-react";
+
+# Understanding React Hooks: useState and useEffect Explained for Newbies
+
+When working with React, two of the most important concepts you’ll encounter are **state** and **side effects**. React provides hooks—special functions that let you “hook into” React features—to manage these. The two most fundamental hooks are `useState` and `useEffect`.
+
+Let’s break them down step by step with simple examples.
+
+---
+
+## What is `useState`?
+
+The `useState` hook lets you add **state** to a functional component. Think of state as your component’s personal memory—it stores values that can change over time.
+
+### Example: A Counter
+
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+- `useState(0)` initializes the state with a value of `0`.
+- `count` is the current state value.
+- `setCount` is a function used to update the state.
+- Clicking the button calls `setCount(count + 1)`, which re-renders the component with the new value.
+
+---
+
+## What is `useEffect`?
+
+The `useEffect` hook lets you handle **side effects** in your component. A side effect is anything that affects something outside the component, such as fetching data, updating the document title, or setting up event listeners.
+
+### Example: Updating the Document Title
+
+```jsx
+import { useState, useEffect } from "react";
+
+function ClickTracker() {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `You clicked ${count} times`;
+  }, [count]);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default ClickTracker;
+```
+
+Here’s what’s happening:
+- The effect runs **after each render**.
+- The `[count]` dependency means the effect runs only when `count` changes.
+- `document.title` updates with the latest value of `count`.
+
+---
+
+## Key Differences Between `useState` and `useEffect`
+
+- **`useState`**: Manages data *inside* the component.
+- **`useEffect`**: Handles tasks that happen *outside* the component (side effects).
+
+---
+
+## Putting Them Together
+
+Here’s a component that uses both hooks:
+
+```jsx
+import { useState, useEffect } from "react";
+
+function WelcomeCounter({ name }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log(`${name} clicked ${count} times`);
+  }, [count, name]);
+
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default WelcomeCounter;
+```
+
+- `useState` keeps track of the click count.
+- `useEffect` logs a message every time the count or name changes.
+
+---
+
+## Key Takeaways
+
+- `useState` = component memory for values that change.
+- `useEffect` = a way to run code when something changes (or when the component mounts/unmounts).
+- Together, they let you build dynamic, interactive components.
+
+With these two hooks, you’ve unlocked the foundation of modern React development! 🚀

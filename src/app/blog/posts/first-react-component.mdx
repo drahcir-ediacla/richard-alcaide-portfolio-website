@@ -1,0 +1,147 @@
+---
+title: "Your First React Component: A Step-by-Step Guide"
+description: "Demystify the creation of a basic functional React component, with an introduction to props and state."
+publishedAt: "2025-04-18"
+---
+
+import { Sandpack } from "@codesandbox/sandpack-react";
+
+# Your First React Component: A Step-by-Step Guide
+
+React is one of the most popular libraries for building user interfaces. If you’re new to React, the best place to start is by creating your very first component. In this guide, we’ll walk through building a simple functional component, and explain two key concepts: **props** and **state**.
+
+---
+
+## What is a Component?
+
+A **component** in React is like a building block of your UI. You can think of it as a reusable piece of code that represents part of the interface—such as a button, header, or card.
+
+Components can be **functional** or **class-based**. Nowadays, functional components are the standard way to write React, so that’s what we’ll use.
+
+---
+
+## Step 1: Create a Functional Component
+
+Here’s the simplest example of a functional component:
+
+```jsx
+function Welcome() {
+  return <h1>Hello, React!</h1>;
+}
+
+export default Welcome;
+```
+
+This component just returns some JSX (JavaScript XML), which looks like HTML but has the full power of JavaScript.
+
+You can use this component in your app like this:
+
+```jsx
+import Welcome from "./Welcome";
+
+function App() {
+  return <Welcome />;
+}
+```
+
+---
+
+## Step 2: Add Props
+
+**Props** (short for *properties*) let you pass data into a component from the outside. Think of them like function parameters.
+
+```jsx
+function Welcome(props) {
+  return <h1>Hello, {props.name}!</h1>;
+}
+
+export default Welcome;
+```
+
+Now, when you use this component, you can pass in a `name`:
+
+```jsx
+function App() {
+  return <Welcome name="Richard" />;
+}
+```
+
+The output will be:
+
+```
+Hello, Richard!
+```
+
+---
+
+## Step 3: Add State
+
+While **props** are passed *into* a component, **state** is data that a component *manages itself*. You can think of it as memory for your component.
+
+React gives us the `useState` hook to manage state in functional components.
+
+```jsx
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default Counter;
+```
+
+Here’s what’s happening:
+- `useState(0)` creates a state variable `count` with an initial value of `0`.
+- `setCount` is a function that updates `count`.
+- When the button is clicked, `setCount(count + 1)` increases the value.
+
+---
+
+## Step 4: Put It Together
+
+Now let’s combine both **props** and **state** into one component.
+
+```jsx
+import { useState } from "react";
+
+function WelcomeCounter({ name }) {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <h1>Hello, {name}!</h1>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
+}
+
+export default WelcomeCounter;
+```
+
+Usage:
+
+```jsx
+function App() {
+  return <WelcomeCounter name="Richard" />;
+}
+```
+
+This will greet the user and keep track of how many times they click the button.
+
+---
+
+## Key Takeaways
+
+- **Components** are reusable building blocks of your UI.
+- **Props** allow components to receive data from the outside.
+- **State** lets components manage their own data over time.
+
+With these basics, you’re ready to start building interactive UIs with React! 🎉

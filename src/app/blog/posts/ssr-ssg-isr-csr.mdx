@@ -1,0 +1,181 @@
+---
+title: "Understanding SSG, SSR, ISR, and CSR in Next.js App Router"
+description: "Learn how SSG, SSR, ISR, and CSR work with the Next.js App Router, and when to use each rendering strategy for your applications."
+publishedAt: "2025-03-17"
+---
+
+# Understanding SSG, SSR, ISR, and CSR in Next.js App Router
+
+Next.js App Router introduces a **new file-based routing system** with React Server Components. Rendering strategies are slightly different here compared to the Pages Router. Let’s explore **SSG, SSR, ISR, and CSR** in the context of App Router.
+
+---
+
+## 1. ⚡ Static Site Generation (SSG)
+
+In the App Router, **fetch data at build time** by default using `fetch` with `cache: "force-cache"`. Pages are statically generated at build time.
+
+```jsx
+// app/blog/page.jsx
+export default async function BlogPage() {
+  const res = await fetch("https://api.example.com/posts", {
+    cache: "force-cache", // SSG
+  });
+  const posts = await res.json();
+
+  return (
+    <div>
+      <h1>Blog Posts</h1>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>{post.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+✅ **When to use**: Blogs, landing pages, docs — content that rarely changes.
+
+---
+
+## 2. 🌐 Server-Side Rendering (SSR)
+
+For SSR in App Router, **fetch data on every request** by using cache: "no-store".
+
+```jsx
+// app/dashboard/page.jsx
+export default async function DashboardPage() {
+  const res = await fetch("https://api.example.com/stats", {
+    cache: "no-store", // SSR
+  });
+  const stats = await res.json();
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+      <p>Total Users: {stats.users}</p>
+      <p>Active Sessions: {stats.sessions}</p>
+    </div>
+  );
+}
+```
+✅ **When to use**: Dynamic content, dashboards, personalized pages.
+
+---
+
+## 3. ⚡ Incremental Static Regeneration (ISR)
+ISR is achieved by specifying a revalidate **interval** in fetch.
+
+```jsx
+// app/news/page.jsx
+export default async function NewsPage() {
+  const res = await fetch("https://api.example.com/news", {
+    next: { revalidate: 60 }, // ISR: regenerate every 60s
+  });
+  const news = await res.json();
+
+  return (
+    <div>
+      <h1>Latest News</h1>
+      <ul>
+        {news.map((item) => (
+          <li key={item.id}>{item.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+✅ **When to use**: Product listings, marketing pages, news feeds.
+
+---
+
+## 4. 💻 Client-Side Rendering (CSR)
+CSR works the same way as before, fetching data **inside a client component**.
+
+```jsx
+"use client";
+
+import { useEffect, useState } from "react";
+
+export default function UserProfile() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    fetch("/api/user")
+      .then((res) => res.json())
+      .then((data) => setUser(data));
+  }, []);
+
+  if (!user) return <p>Loading...</p>;
+
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>Email: {user.email}</p>
+    </div>
+  );
+}
+```
+
+✅ **When to use**: User-specific pages, interactive dashboards, client-heavy UIs.
+
+---
+
+## ⚖️ Rendering Strategies Comparison (App Router)
+
+<table>
+  <thead>
+    <tr>
+      <th>Strategy</th>
+      <th>How to Fetch</th>
+      <th>When to Use</th>
+      <th>Pros</th>
+      <th>Cons</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>SSG</strong></td>
+      <td><code>fetch</code> with <code>cache: "force-cache"</code></td>
+      <td>Static content</td>
+      <td>Fast, SEO-friendly</td>
+      <td>Build time increases with many pages</td>
+    </tr>
+    <tr>
+      <td><strong>SSR</strong></td>
+      <td><code>fetch</code> with <code>cache: "no-store"</code></td>
+      <td>Dynamic content</td>
+      <td>Always up-to-date</td>
+      <td>Slower response than SSG</td>
+    </tr>
+    <tr>
+      <td><strong>ISR</strong></td>
+      <td><code>fetch</code> with <code>next: {"{ revalidate: X }"}</code></td>
+      <td>Mostly static content with updates</td>
+      <td>Fast + fresh data</td>
+      <td>Complexity in cache management</td>
+    </tr>
+    <tr>
+      <td><strong>CSR</strong></td>
+      <td><code>useEffect</code> or SWR</td>
+      <td>User-specific/interactive</td>
+      <td>Instant interactions</td>
+      <td>Poor SEO, slower first load</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+## 🚀 Key Takeaways
+- App Router uses **React Server Components**, so data fetching is mostly done **inside components**.
+- **SSG** → cache: "force-cache"
+- **SSR** → cache: "no-store"
+- **ISR** → next: revalidate: X 
+- **CSR** → Client components with hooks like useEffect.
+
+Choosing the right rendering method depends on content type, SEO needs, and interactivity. App Router simplifies combining these strategies for modern Next.js apps.
+
+---
