@@ -114,10 +114,10 @@ const about: About = {
       {
         company: "FIRST G OUTSOURCING INC.",
         timeframe: "March 2025 - Present",
-        role: "Freelance WordPress Developer",
+        role: "Freelance Web Developer",
         achievements: [
           <>
-            Designing and developing new features, functionalities, and the overall website architecture.
+            Designing and developing new features, functionalities, and the overall Shopify and WordPress website architecture.
           </>,
           <>
             Creating custom themes and plugins to extend WordPress functionality and meet specific project requirements.
