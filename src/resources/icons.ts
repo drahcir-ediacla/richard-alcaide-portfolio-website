@@ -30,6 +30,7 @@ import {
 } from "react-icons/si";
 
 import { FaDiscord, FaGithub, FaLinkedin, FaX, FaThreads, FaSquareBehance } from "react-icons/fa6";
+import { FaCloudDownloadAlt } from "react-icons/fa";
 
 export const iconLibrary: Record<string, IconType> = {
   arrowUpRight: HiArrowUpRight,
@@ -58,6 +59,7 @@ export const iconLibrary: Record<string, IconType> = {
   supabase: SiSupabase,
   figma: SiFigma,
   behance: FaSquareBehance,
+  download: FaCloudDownloadAlt,
 };
 
 export type IconLibrary = typeof iconLibrary;

@@ -92,7 +92,7 @@ const about: About = {
   },
   calendar: {
     display: true,
-    link: "https://cal.com",
+    link: "https://drive.google.com/file/d/1DSUJZCGx1TgbdsFxavRaK6U1BC2vn4Wa/view?usp=sharing",
   },
   intro: {
     display: true,
